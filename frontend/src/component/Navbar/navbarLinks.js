@@ -6,7 +6,7 @@ import { MdDashboard } from "react-icons/md";
  const navbarLinksData = [
         {
             name: "Dashboard",
-            link: "/dashboard",
+            link: "/",
             Icon: MdDashboard,
         },
         {

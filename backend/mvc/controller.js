@@ -35,6 +35,14 @@ const find = async (req, res) => {
         res.json(err.message)
     })
 }
+const aggregate = async (req, res) => {
+    await Model.aggregate(req.body.pipeline).then((data) => {
+        res.json({ success: true, data,message:`data is find successfully with aggregation` })
+    }).catch((err) => {
+        res.json(err.message)
+    })
+}
+
 const update = async (req, res) => {
     const _id = req.params._id
     await Model.findOneAndUpdate({ _id }, { $set:req.body }, { new: true }).then((data) => {
@@ -51,6 +59,6 @@ const remove = async (req, res) => {
         res.json(err.message)
     })
 }
-return { fetchOne, fetchAll, add, find,update, remove }
+return { fetchOne, fetchAll,aggregate, add, find,update, remove }
 }
 module.exports=crud
