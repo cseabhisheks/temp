@@ -26,7 +26,7 @@ export const dashboardData = (totalProperty,totalRoom,totalOccupiedRoom,totalInc
             Icon: LuDollarSign,
         },
         {
-            title: "Collected This Month",
+            title: `Collected This Month ( ${new Date().toLocaleDateString('en-IN',{month:'long'})} )`,
             value: `₹ ${totalAmountReceived=== 0 ? '.....' :totalAmountReceived.toLocaleString('en-IN')}`,
             description: "2 payments received",
             Icon: LuTrendingUp,

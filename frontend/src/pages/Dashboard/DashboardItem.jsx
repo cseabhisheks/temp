@@ -15,9 +15,30 @@ export default function DashboardItem() {
                     { $match: { Status: 'occupied' } },
                     { $group: { _id: null, totalIncome: { $sum: "$RentAmount" } } }
                 ])
+
+                const currentMonth = new Date().getMonth() + 1; // 1-12
+                const currentYear = new Date().getFullYear();
+
                 const totalAmountReceived = await aggregate('payment', [
-                    { $group: { _id: null, totalAmountReceived: { $sum: "$amount" } } }
-                ])
+                    {
+                        $addFields: {
+                            month: { $month: "$createdAt" },  // extract month from UTC
+                            year: { $year: "$createdAt" }     // extract year from UTC
+                        }
+                    },
+                    {
+                        $match: {
+                            month: currentMonth,
+                            year: currentYear
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            totalAmountReceived: { $sum: "$amount" }
+                        }
+                    }
+                ]);
 
                 setDashStats({
                     totalProperty: totalProperty.data.length,

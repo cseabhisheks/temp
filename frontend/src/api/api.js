@@ -20,7 +20,6 @@ const find = async (modelName, query={}) => {
 const aggregate=async(modelName,pipeline)=>{
     try {
     const res = await axios.post(`${BACKEND}/${modelName}/aggregate`, { pipeline })
-    console.log(res.data)
     return res.data
   } catch (err) {
     return err
