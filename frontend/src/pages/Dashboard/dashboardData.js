@@ -5,7 +5,7 @@ import {
     LuTrendingUp,
 } from "react-icons/lu";
 
-export const dashboardData = (totalProperty,totalRoom,totalOccupiedRoom,totalIncome,totalAmountReceived) => {
+export const dashboardData = (totalProperty,totalRoom,totalOccupiedRoom,totalIncome,totalAmountReceived,totalPaymentCount) => {
    return [
         {
             title: "Total Properties",
@@ -28,7 +28,7 @@ export const dashboardData = (totalProperty,totalRoom,totalOccupiedRoom,totalInc
         {
             title: `Collected This Month ( ${new Date().toLocaleDateString('en-IN',{month:'long'})} )`,
             value: `₹ ${totalAmountReceived=== 0 ? '.....' :totalAmountReceived.toLocaleString('en-IN')}`,
-            description: "2 payments received",
+            description: `${totalPaymentCount} payments received`,
             Icon: LuTrendingUp,
         },
     ];

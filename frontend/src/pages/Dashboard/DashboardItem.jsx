@@ -4,7 +4,7 @@ import DashboardCard from "./DashboardCard"
 import { useEffect, useState } from "react";
 import { aggregate, fetchAll, find } from "../../api/api";
 export default function DashboardItem() {
-    const [dashStats, setDashStats] = useState({ totalProperty: 0, totalRoom: 0, totalOccupiedRoom: 0, totalIncome: 0, totalAmountReceived: 0 })
+    const [dashStats, setDashStats] = useState({ totalProperty: 0, totalRoom: 0, totalOccupiedRoom: 0, totalIncome: 0, totalAmountReceived: 0, totalPaymentCount: 0 })
     useEffect(() => {
         const getTotalCount = async () => {
             try {
@@ -32,10 +32,12 @@ export default function DashboardItem() {
                             year: currentYear
                         }
                     },
+
                     {
                         $group: {
                             _id: null,
-                            totalAmountReceived: { $sum: "$amount" }
+                            totalAmountReceived: { $sum: "$amount" },
+                            totalPaymentCount: { $sum: 1 }
                         }
                     }
                 ]);
@@ -45,7 +47,8 @@ export default function DashboardItem() {
                     totalRoom: totalRoom.data.length,
                     totalOccupiedRoom: totalOccupied.data.length,
                     totalIncome: totalIncome.data[0].totalIncome,
-                    totalAmountReceived: totalAmountReceived.data[0].totalAmountReceived
+                    totalAmountReceived: totalAmountReceived.data[0].totalAmountReceived,
+                    totalPaymentCount: totalAmountReceived.data[0].totalPaymentCount
                 })
 
             } catch (err) {
@@ -59,7 +62,7 @@ export default function DashboardItem() {
     return (<>
 
         <div className="bg-primary/30 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 min-h-[40vh] border-2 p-8 items-center">
-            {dashboardData(dashStats.totalProperty, dashStats.totalRoom, dashStats.totalOccupiedRoom, dashStats.totalIncome, dashStats.totalAmountReceived).map((element, idx) => (
+            {dashboardData(dashStats.totalProperty, dashStats.totalRoom, dashStats.totalOccupiedRoom, dashStats.totalIncome, dashStats.totalAmountReceived,dashStats.totalPaymentCount).map((element, idx) => (
                 <span key={idx}>
                     <DashboardCard title={element.title}
                         Icon={element.Icon}
