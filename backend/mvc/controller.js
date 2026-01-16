@@ -37,7 +37,7 @@ const find = async (req, res) => {
 }
 const aggregate = async (req, res) => {
     await Model.aggregate(req.body.pipeline).then((data) => {
-        res.json({ success: true, data,message:`data is find successfully with aggregation : ${Model.modelName}` })
+        res.json({ success: true, data,message:`data is find successfully with aggregation : ${Model.modelName}` })//modelName give access to model name
     }).catch((err) => {
         res.json(err.message)
     })

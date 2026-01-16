@@ -43,13 +43,14 @@ export default function DashboardItem() {
                 ]);
 
                 setDashStats({
-                    totalProperty: totalProperty.data.length,
-                    totalRoom: totalRoom.data.length,
-                    totalOccupiedRoom: totalOccupied.data.length,
-                    totalIncome: totalIncome.data[0].totalIncome,
-                    totalAmountReceived: totalAmountReceived.data[0].totalAmountReceived,
-                    totalPaymentCount: totalAmountReceived.data[0].totalPaymentCount
-                })
+                    totalProperty: totalProperty.data?.length || 0,
+                    totalRoom: totalRoom.data?.length || 0,
+                    totalOccupiedRoom: totalOccupied.data?.length || 0,
+                    totalIncome: totalIncome.data?.[0]?.totalIncome || 0,
+                    totalAmountReceived:totalAmountReceived.data?.[0]?.totalAmountReceived || 0,
+                    totalPaymentCount:totalAmountReceived.data?.[0]?.totalPaymentCount || 0,
+                });
+
 
             } catch (err) {
                 console.log(err)
@@ -62,7 +63,7 @@ export default function DashboardItem() {
     return (<>
 
         <div className="bg-primary/30 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 min-h-[40vh] border-2 p-8 items-center">
-            {dashboardData(dashStats.totalProperty, dashStats.totalRoom, dashStats.totalOccupiedRoom, dashStats.totalIncome, dashStats.totalAmountReceived,dashStats.totalPaymentCount).map((element, idx) => (
+            {dashboardData(dashStats.totalProperty, dashStats.totalRoom, dashStats.totalOccupiedRoom, dashStats.totalIncome, dashStats.totalAmountReceived, dashStats.totalPaymentCount).map((element, idx) => (
                 <span key={idx}>
                     <DashboardCard title={element.title}
                         Icon={element.Icon}

@@ -26,9 +26,6 @@ app.use('/electrictyBill',routerLayer('electricityBill',electricityBill))
 app.use('/payment',routerLayer('payment',payment))
 
 
-
-
-
 //listens
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT} ${FRONTEND}`)

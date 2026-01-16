@@ -20,7 +20,7 @@ const room = createModel('room', {
 const tenant = createModel('tenant', {
     TName: String,
     TPhone: { type: Number, maxLength: 12 },
-    Room: { type: 'ObjectId', ref: 'room' } // Optional back-reference
+    Room: { type: 'ObjectId', ref: 'room' } 
 })
 
 // Rent bill model
