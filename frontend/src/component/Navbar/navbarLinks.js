@@ -10,8 +10,8 @@ import { MdDashboard } from "react-icons/md";
             Icon: MdDashboard,
         },
         {
-            name: "Homes",
-            link: "/homes",
+            name: "Property",
+            link: "/property",
             Icon: FaBuilding,
         },
         {
