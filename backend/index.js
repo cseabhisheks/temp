@@ -22,7 +22,7 @@ app.use('/property',routerLayer('property',Property))
 app.use('/room',routerLayer('room',room))
 app.use('/tenant',routerLayer('tenant',tenant))
 app.use('/rentBill',routerLayer('rentBill',rentBill))
-app.use('/electrictyBill',routerLayer('electricityBill',electricityBill))
+app.use('/electricityBill',routerLayer('electricityBill',electricityBill))
 app.use('/payment',routerLayer('payment',payment))
 
 

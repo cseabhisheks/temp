@@ -9,7 +9,7 @@ const fetchAll = async (modelName) => {
     return err
   }
 }
-const find = async (modelName, query={}) => {
+const find = async (modelName, query = {}) => {
   try {
     const res = await axios.get(`${BACKEND}/${modelName}/find`, { params: query })
     return res.data
@@ -17,15 +17,15 @@ const find = async (modelName, query={}) => {
     return err
   }
 }
-const aggregate=async(modelName,pipeline)=>{
-    try {
+const aggregate = async (modelName, pipeline) => {
+  try {
     const res = await axios.post(`${BACKEND}/${modelName}/aggregate`, { pipeline })
     return res.data
   } catch (err) {
     return err
   }
 }
-export { fetchAll, find,aggregate }
+export { fetchAll, find, aggregate }
 
 
 

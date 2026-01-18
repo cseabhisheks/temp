@@ -4,7 +4,8 @@ const createModel = require('../mvc/model')
 const Property = createModel('property', {
     HName: String,
     HAddress: String,
-    HPrice: Number
+    HPrice: Number,
+    EBRate:Number,
 })
 
 // Room model
@@ -35,7 +36,9 @@ const rentBill = createModel('rentBill', {
 const electricityBill = createModel('electricityBill', {
     Tenant: { type: 'ObjectId', ref: 'tenant', required: true },
     Month: { type: String, enum: ['january','february','march','april','may','june','july','august','september','october','november','december'], required: true },
+    previousReading:Number,
     currentReading: Number,
+    EBAmount:Number,
     Paid: { type: Boolean, default: false }
 })
 

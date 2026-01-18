@@ -15,7 +15,7 @@ export const dashboardData = (totalProperty, totalRoom, totalOccupiedRoom, total
         },
         {
             title: "Occupancy Rate",
-            value: `${totalOccupiedRoom === 0 ? '.....' : totalOccupiedRoom / totalRoom * 100 +'%'} `,
+            value: `${totalOccupiedRoom === 0 ? '.....' : (totalOccupiedRoom / totalRoom * 100).toFixed(2) +'%'} `,
             description: `${totalOccupiedRoom === 0 ? '.....' : totalOccupiedRoom} of  ${totalRoom === 0 ? '.....' : totalRoom} units occupied`,
             Icon: LuUsers,
         },
