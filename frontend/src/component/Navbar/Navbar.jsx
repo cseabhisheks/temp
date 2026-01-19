@@ -27,7 +27,7 @@ export default function Navbar() {
         {/* mobile screen menubar */}
         <div className='md:hidden '>
             {isMenuBarOpen && (
-                <ul className='border-2 text-accent w-[100vw] flex flex-col items-center gap-5 relative bg-primary/80 p-4'>
+                <ul onClick={()=>setMenuBarOpen(false)} className='border-2 text-accent w-[100vw] flex flex-col items-center gap-5 relative bg-primary/80 p-4'>
                     <NavbarItem />
                 </ul>
             )}

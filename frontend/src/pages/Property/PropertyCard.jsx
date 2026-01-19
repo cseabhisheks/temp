@@ -29,25 +29,27 @@ export default function PropertyCard({ name, address, totalUnits, occupiedUnits,
             {/* expected monthly revenue */}
             <div className="flex justify-between items-center ">
                 <div className="font-bold">monthly Revenue</div>
-                <span className="text-success font-bold">₹ { (monthlyRevenue).toLocaleString('en-IN')}</span>
+                <span className="text-success font-bold">₹ {(monthlyRevenue).toLocaleString('en-IN')}</span>
             </div>
             <hr />
 
             {/* tenant list */}
             <div className="">
                 <h1 className="font-bold mb-5">tenants :</h1>
-                <ul className="ml-5  grid text-xs md:text-base grid-cols-2 gap-2">
+                <ul className="ml-5 text-xs md:text-base ">
                     {tenants.map((element, idx) => (
-                        <li key={idx} className=" border-2 bg-primary/20 rounded-xl  px-2 py-1 flex gap-1 items-center">
+                        <li key={idx} className=" border-2  mt-4 bg-primary/20 rounded-xl  px-2 py-1 flex flex-col md:flex-row gap-1 md:items-center">
                             <div>{element.name}</div>
                             <RiSubtractLine />
-                            <div>Room No.{element.roomNo}</div>
+                            <div>Room No. {element.roomNo}</div>
+                            <RiSubtractLine />
+                            <div>Rent.{element.rent}</div>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            
+
 
 
         </div>
