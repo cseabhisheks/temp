@@ -17,6 +17,33 @@ const find = async (modelName, query = {}) => {
     return err
   }
 }
+
+const add = async (modelName, formData) => {
+  try {
+    const res = await axios.post(`${BACKEND}/${modelName}/add`, formData)
+    return res.data
+  } catch (err) {
+    return err
+  }
+}
+const update = async (modelName, formData, id) => {
+  try {
+    const res = await axios.patch(`${BACKEND}/${modelName}/${id}/update`, formData)
+    return res.data
+  } catch (err) {
+    return err
+  }
+}
+const remove = async (modelName,  id) => {
+  try {
+    const res = await axios.delete(`${BACKEND}/${modelName}/${id}/delete`)
+    return res.data
+  } catch (err) {
+    return err
+  }
+}
+
+
 const aggregate = async (modelName, pipeline) => {
   try {
     const res = await axios.post(`${BACKEND}/${modelName}/aggregate`, { pipeline })
@@ -25,7 +52,7 @@ const aggregate = async (modelName, pipeline) => {
     return err
   }
 }
-export { fetchAll, find, aggregate }
+export { fetchAll, find, aggregate, add, update,remove }
 
 
 

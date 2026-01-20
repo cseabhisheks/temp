@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { IoClose } from "react-icons/io5";
 import Button from "../Button/Button";
-export default function DynamicForm({ title, formFields, formOpen, setFormOpen, submitText }) {
+import { add, update, remove, find } from "../../api/api";
+
+export default function DynamicForm({ formConfig }) {
+    const { title, formFields, formOpen, setFormOpen, submitText, modelName, _id, isUpdate, refreshData } = formConfig
     // dynamic form field creation in this way  name: "",  email: "",  phone: "",  address: "",  password: ""
     const initialFormState = formFields.reduce((acc, field) => {
         acc[field.name] = "";
@@ -19,15 +22,39 @@ export default function DynamicForm({ title, formFields, formOpen, setFormOpen, 
         ))
         console.log(formData)
     }
+
+    // submit
     const handleSubmit = async (e) => {
         e.preventDefault()
-     console.log(formData)//here is the captured data
+        if (isUpdate) {
+            const res = await update(modelName, formData, _id)
+            console.log(res)
+            setFormData(initialFormState)
+        }
+        else {
+            const res = await add(modelName, formData)
+            console.log(res)
+        }
+        setFormOpen(false)
+        refreshData()
     }
+    // update
+    const fetchDataforUpdate = async () => {
+        console.log(_id)
+        const fetchData = await find(modelName, { _id })
+        setFormData(fetchData.data[0]);
+    }
+    useEffect(() => {
+        if (isUpdate && formOpen) {
+            fetchDataforUpdate();
+        }
+    }, [isUpdate, formOpen]);   // ✅ RUNS WHEN FORM OPENS
+
     return (<>
 
         {formOpen &&
-        // div container to blur bg of form 
-            <div className="bg-black/20 backdrop-blur-sm w-[100vw] h-[100vh]  fixed left-0 top-0 flex flex-col justify-center items-center ">
+            // div container to blur bg of form 
+            <div className="z-10 bg-black/20 backdrop-blur-sm w-[100vw] h-[100vh]  fixed left-0 top-0 flex flex-col justify-center items-center ">
                 {/* form */}
                 <form onSubmit={handleSubmit} className=" rounded-xl w-[90vw] md:w-[40vw] p-4 bg-primary text-accent" action="">
                     <div className="flex  items-center justify-between">
@@ -38,7 +65,7 @@ export default function DynamicForm({ title, formFields, formOpen, setFormOpen, 
                         <label key={idx} htmlFor={elem.name} >
                             <span className="capitalize">{elem.name}</span>
                             <br />
-                            <input className="rounded-xl px-2 py-1 mb-4 w-full " type={elem.type} name={elem.name} id={elem.name} placeholder={`enter ${elem.name} `} onChange={handleChange} />
+                            <input className="rounded-xl px-2 py-1 mb-4 w-full " type={elem.type} name={elem.name} id={elem.name} placeholder={`enter ${elem.name} `} onChange={handleChange} value={formData[elem.name] || ""} />
                             <br />
                         </label>
                     ))}

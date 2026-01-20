@@ -22,7 +22,7 @@ export default function PendingBillItem() {
             }
         }
     ]
-     const electricityPipeline = [
+    const electricityPipeline = [
         { $match: { Paid: false } },
         {
             $lookup: {
@@ -35,7 +35,7 @@ export default function PendingBillItem() {
         { $unwind: '$tenantss' },//make array into object
         {
             $project: {
-                name: '$tenantss.TName', date: "$createdAt", billType: { $literal: 'electricity' }, amount: '$EBAmount', ConsumedReading:{ $subtract: ['$currentReading', '$previousReading'] }
+                name: '$tenantss.TName', date: "$createdAt", billType: { $literal: 'electricity' }, amount: '$EBAmount', ConsumedReading: { $subtract: ['$currentReading', '$previousReading'] }
             }
         }
     ]
@@ -48,7 +48,7 @@ export default function PendingBillItem() {
             const EBBill = await aggregate('electricityBill', electricityPipeline)
             const combinedBills = [
                 ...(rentBill.data || []),
-                ...(EBBill.data || [])  
+                ...(EBBill.data || [])
             ];
 
             setBill({ rentBillData: combinedBills });
@@ -59,22 +59,32 @@ export default function PendingBillItem() {
 
 
     return (<>
-        <div className="border-2 bg-primary ">
+        <div className="border-2 bg-black/80 ">
             <div className=" px-8 pt-8 capitalize">
                 <h1 className="text-lg md:text-xl text-accent ">pending bills</h1>
 
                 <span className="text-xs md:text-base text-gray-400">The following list includes all tenants whose payments remain outstanding for the current billing cycle.</span>
             </div>
-            {bill.rentBillData.map((element, idx) => (
-                <span key={idx}>
-                    <PendingBillCard name={element.name}
-                        date={element.date}
-                        billType={element.billType}
-                        amount={element.amount}
-                        ConsumedReading={element.ConsumedReading}
-                    />
-                </span>
-            ))}
+            <div className="border-2 h-[35vh] bg-accent/80 overflow-y-auto m-4 rounded-xl ">
+                {bill.rentBillData.length!=0 ?
+                    (
+                        bill.rentBillData.map((element, idx) => (
+                            <span key={idx}>
+                                <PendingBillCard name={element.name}
+                                    date={element.date}
+                                    billType={element.billType}
+                                    amount={element.amount}
+                                    ConsumedReading={element.ConsumedReading}
+                                />
+                            </span>
+                        ))
+                    )
+                    :
+                    <div className=" capitalize font-bold flex items-center justify-center h-full">
+                        no pending bill
+                    </div>
+                }
+            </div>
         </div>
     </>)
 

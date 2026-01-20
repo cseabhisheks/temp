@@ -1,4 +1,4 @@
-import propertiesData from "./propertiesData"
+
 import PropertyCard from "./PropertyCard"
 import { aggregate } from "../../api/api"
 import { useState, useEffect } from "react"
@@ -40,7 +40,15 @@ export default function Property() {
           }
         },
         totalUnits: { $size: "$rooms" },
-        occupiedUnits: { $size: { $filter: { input: "$rooms", as: "r", cond: { $eq: ["$$r.Status", "occupied"] } } } }
+        occupiedUnits: {
+          $size: {
+            $filter: {
+              input: "$rooms",
+              as: "r",
+              cond: { $eq: ["$$r.Status", "occupied"] }
+            }
+          }
+        }
       }
     },
 
@@ -49,16 +57,19 @@ export default function Property() {
       $project: {
         name: "$HName",
         address: "$HAddress",
+        HPrice: 1,        // ✅ added
+        EBRate: 1,        // ✅ added
         totalUnits: 1,
         occupiedUnits: 1,
         monthlyRevenue: { $sum: "$occupiedRooms.RentAmount" },
-        //finding tenants
+
+        // finding tenants
         tenants: {
           $map: {
             input: "$occupiedRooms",
             as: "room",
             in: {
-              roomNo: { $toString: "$$room._id" },
+              roomNo: "$$room.RoomNo",   // ✅ FIXED: using RoomNo instead of _id
               rent: "$$room.RentAmount",
               name: {
                 $arrayElemAt: [
@@ -84,25 +95,41 @@ export default function Property() {
       }
     }
   ];
-  useEffect(() => {
-    const fetchPropertyData = async () => {
-      const fetch = await aggregate('property', pipeline)
-      setPropertyData(fetch.data)
-      console.log(fetch.data)
-    }
-    fetchPropertyData()
 
+
+  const fetchPropertyData = async () => {
+    const fetch = await aggregate('property', pipeline)
+    setPropertyData(fetch.data || [])
+    console.log(fetch.data)
+  }
+
+  useEffect(() => {
+    fetchPropertyData()
   }, [])
+
   const [formOpen, setFormOpen] = useState(false)
-  // dunmaic form field
+
   const formFields = [
-    { name: "name", type: "text", icon: <FaUser /> },
-    { name: "email", type: "email", icon: <FaEnvelope /> },
-    { name: "phone", type: "tel", icon: <FaPhone /> },
-    { name: "address", type: "text", icon: <FaMapMarkerAlt /> },
-    { name: "password", type: "password", icon: <FaLock /> }
+    { name: "HName", type: "text", icon: <FaUser /> },
+    { name: "HAddress", type: "text", icon: <FaEnvelope /> },
+    { name: "HPrice", type: "number", icon: <FaPhone /> },
+    { name: "EBRate", type: "number", icon: <FaMapMarkerAlt /> },
   ];
+
+  const formConfig = {
+    title: 'add property',
+    formFields: formFields,
+    formOpen: formOpen,
+    setFormOpen: setFormOpen,
+    submitText: 'add',
+    modelName: 'property',
+    refreshData: fetchPropertyData
+  }
+
   return (<>
+    {/* form */}
+    <DynamicForm formConfig={formConfig} />
+
     <div className="bg-primary/20 min-h-full p-8">
       {/* text and description */}
       <div className="flex items-center justify-between gap-8">
@@ -119,23 +146,14 @@ export default function Property() {
         <span onClick={() => setFormOpen(true)} >
           <Button btn_text={'add'} Icon={IoMdAdd} />
         </span>
-        {/* form */}
-        <DynamicForm
-          title='form' formFields={formFields}
-          formOpen={formOpen} setFormOpen={setFormOpen} submitText='submit'
-        />
+
 
       </div>
       {/* render cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4  ">
         {propertyData.map((element, idx) => (
           <span key={idx}>
-            <PropertyCard
-              name={element.name} address={element.address}
-              totalUnits={element.totalUnits} occupiedUnits={element.occupiedUnits}
-              monthlyRevenue={element.monthlyRevenue}
-              tenants={element.tenants}
-            />
+            <PropertyCard PropertyConfig={element} fetchPropertyData={fetchPropertyData} />
           </span>
         ))}
       </div>
