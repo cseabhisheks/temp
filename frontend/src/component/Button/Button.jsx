@@ -2,7 +2,7 @@
 export default function Button({ btn_text, Icon,btn_color,onClick }) {
 
     return (<>
-        <button onClick={onClick}  className={`flex  items-center justify-between border-2 border-primary rounded-xl w-[150px] text-center  ${btn_color?btn_color:'bg-accent'} text-primary font-bold capitalize py-1 px-4`}  type='submit'>
+        <button onClick={onClick}  className={`flex  items-center justify-between border-2 border-primary rounded-xl md:w-[150px] text-center  ${btn_color?btn_color:'bg-accent'} text-primary font-bold capitalize py-1 px-4`}  type='submit'>
             {Icon &&
                 <span>
                     <Icon />

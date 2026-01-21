@@ -5,53 +5,27 @@ import { useState, useEffect } from "react"
 import Button from "../../component/Button/Button"
 import { IoMdAdd } from "react-icons/io";
 import DynamicForm from '../../component/Form/DynamicForm'
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLock } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 export default function Property() {
   const [propertyData, setPropertyData] = useState([])
   const pipeline = [
     // Join rooms with property
     {
-      $lookup: {
-        from: "rooms",
-        localField: "_id",
-        foreignField: "Property",
-        as: "rooms"
-      }
+      $lookup: { from: "rooms", localField: "_id", foreignField: "Property", as: "rooms" }
     },
-
     // Join tenants with rooms
     {
-      $lookup: {
-        from: "tenants",
-        localField: "rooms.Tenant",
-        foreignField: "_id",
-        as: "tenantsInfo"
-      }
+      $lookup: { from: "tenants", localField: "rooms.Tenant", foreignField: "_id", as: "tenantsInfo" }
     },
-
     // Compute counts, revenue, and tenants in one stage
     {
-      $addFields: {
-        occupiedRooms: {
-          $filter: {
-            input: "$rooms",
-            as: "r",
-            cond: { $eq: ["$$r.Status", "occupied"] }
-          }
-        },
+      $addFields:
+      {
+        occupiedRooms: { $filter: { input: "$rooms", as: "r", cond: { $eq: ["$$r.Status", "occupied"] } } },
         totalUnits: { $size: "$rooms" },
-        occupiedUnits: {
-          $size: {
-            $filter: {
-              input: "$rooms",
-              as: "r",
-              cond: { $eq: ["$$r.Status", "occupied"] }
-            }
-          }
-        }
+        occupiedUnits: { $size: { $filter: { input: "$rooms", as: "r", cond: { $eq: ["$$r.Status", "occupied"] } } } }
       }
     },
-
     // Final shaping of output
     {
       $project: {
@@ -62,47 +36,24 @@ export default function Property() {
         totalUnits: 1,
         occupiedUnits: 1,
         monthlyRevenue: { $sum: "$occupiedRooms.RentAmount" },
-
         // finding tenants
         tenants: {
           $map: {
-            input: "$occupiedRooms",
-            as: "room",
-            in: {
+            input: "$occupiedRooms", as: "room", in: {
               roomNo: "$$room.RoomNo",   // ✅ FIXED: using RoomNo instead of _id
               rent: "$$room.RentAmount",
-              name: {
-                $arrayElemAt: [
-                  {
-                    $map: {
-                      input: {
-                        $filter: {
-                          input: "$tenantsInfo",
-                          as: "t",
-                          cond: { $eq: ["$$t._id", "$$room.Tenant"] }
-                        }
-                      },
-                      as: "t",
-                      in: "$$t.TName"
-                    }
-                  },
-                  0
-                ]
-              }
+              name: { $arrayElemAt: [{ $map: { input: { $filter: { input: "$tenantsInfo", as: "t", cond: { $eq: ["$$t._id", "$$room.Tenant"] } } }, as: "t", in: "$$t.TName" } }, 0] }
             }
           }
         }
       }
     }
   ];
-
-
   const fetchPropertyData = async () => {
     const fetch = await aggregate('property', pipeline)
     setPropertyData(fetch.data || [])
     console.log(fetch.data)
   }
-
   useEffect(() => {
     fetchPropertyData()
   }, [])
@@ -134,7 +85,12 @@ export default function Property() {
       {/* text and description */}
       <div className="flex items-center justify-between gap-8">
         <div className="capitalize">
-          <h1 className="text-lg md:text-xl text-secondary  font-bold tracking-wider ">Yours Properties</h1>
+          <div className="flex justify-between">
+            <h1 className="text-lg md:text-xl text-secondary  font-bold tracking-wider ">Yours Properties</h1>
+            <span onClick={() => setFormOpen(true)} >
+              <Button btn_text={'add'} Icon={IoMdAdd} />
+            </span>
+          </div>
 
           <span className="text-xs md:text-base ">
             Welcome to your property dashboard! Check out each property’s details, see how many units
@@ -143,9 +99,7 @@ export default function Property() {
           </span>
         </div>
 
-        <span onClick={() => setFormOpen(true)} >
-          <Button btn_text={'add'} Icon={IoMdAdd} />
-        </span>
+
 
 
       </div>

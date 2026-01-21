@@ -43,7 +43,7 @@ export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
     return (<>
         <DynamicForm formConfig={formConfig} />
 
-        <div className="relative border-primary capitalize  bg-white rounded-xl m-4 md:m-8 p-4 md:p-8 border-2 h-fit flex flex-col gap-2 ">
+        <div className="text-xs md:text-base relative border-primary capitalize  bg-white rounded-xl m-4 md:m-8 p-4 md:p-8 border-2 h-fit flex flex-col gap-2 ">
             {/* property Detail */}
             <span className="absolute right-4 flex gap-4">
                 <Button onClick={() => setFormOpen(true)} btn_text={'update'} btn_color={'bg-red-300'} />
@@ -92,10 +92,10 @@ export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
                         tenants.map((element, idx) => (
                             <li key={idx} className=" border-2  mt-4 bg-primary/20 rounded-xl  px-2 py-1 flex flex-col md:flex-row gap-1 md:items-center">
                                 <div>{element.name}</div>
-                                <RiSubtractLine />
+                              
                                 <div>Room No. {element.roomNo}</div>
-                                <RiSubtractLine />
-                                <div>Rent.{element.rent}</div>
+                           
+                                <div>Rent. ₹{(element.rent).toLocaleString('en-IN')}</div>
                             </li>
                         ))
                         :
