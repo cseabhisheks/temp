@@ -13,7 +13,7 @@ const room = createModel('room', {
     Property: { type: 'ObjectId', ref: 'property', required: true }, // Which property this room belongs to
     Status: { type: String, enum: ['vacant', 'occupied'], default: 'vacant' },
     RentAmount: Number,
-    effectiveFrom: Date,
+    RoomNo:String,
     Tenant: { type: 'ObjectId', ref: 'tenant', default: null } // Who is currently renting
 })
 

@@ -1,7 +1,50 @@
-import RoomCard from "./RoomCard"
-export default function Room() {
-    return (<>
+import roomPipeline from './roomPipeline';
+import { aggregate } from '../../api/api';
+import { useEffect, useState } from 'react';
+import RoomCard from './RoomCard';
+import DynamicForm from '../../component/Form/DynamicForm';
 
-        <RoomCard />
+import Button from '../../component/Button/Button';
+import { IoAdd } from 'react-icons/io5';
+export default function Room() {
+    // fetch
+    const [roomData, setRoomData] = useState([])
+
+    const fetchRoomData = async () => {
+        const res = await aggregate('property', roomPipeline)
+        console.log(res.data)
+        setRoomData(res.data)
+
+    }
+    useEffect(() => {
+        fetchRoomData()
+        console.log(roomData)
+    }, [])
+
+
+
+    return (<>
+        {/* header */}
+        <div className="capitalize p-8">
+            <div className="flex justify-between mb-4 ">
+                <h1 className="text-lg md:text-xl text-secondary  font-bold tracking-wider ">rooms</h1>
+            </div>
+
+            <span className="text-xs md:text-base ">
+                Welcome to your room dashboard! View each room’s details,
+                check whether it’s occupied or vacant, review rent amounts, and see the
+                current tenant at a glance. Managing your rooms has never been easier!
+            </span>
+        </div>
+   
+    
+        {/* render card */}
+        <div className='p-8 grid grid-cols-1 md:grid-cols-2 gap-8  '>
+            {roomData.map((property, idx) => (
+                <span key={idx}>
+                    <RoomCard property={property} fetchRoomData={fetchRoomData} />
+                </span>
+            ))}
+        </div>
     </>)
 }

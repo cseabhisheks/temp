@@ -3,8 +3,8 @@ import { IoClose } from "react-icons/io5";
 import Button from "../Button/Button";
 import { add, update, remove, find } from "../../api/api";
 
-export default function DynamicForm({ formConfig }) {
-    const { title, formFields, formOpen, setFormOpen, submitText, modelName, _id, isUpdate, refreshData } = formConfig
+export default function DynamicForm({ formConfig, refData }) {
+    const { title, formFields, formOpen, setFormOpen, submitText, modelName, _id, isUpdate, refreshData, hiddenData } = formConfig
     // dynamic form field creation in this way  name: "",  email: "",  phone: "",  address: "",  password: ""
     const initialFormState = formFields.reduce((acc, field) => {
         acc[field.name] = "";
@@ -26,13 +26,17 @@ export default function DynamicForm({ formConfig }) {
     // submit
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const payload = {
+            ...formData,
+            ...hiddenData   // 👈 secretly injected
+        };
         if (isUpdate) {
-            const res = await update(modelName, formData, _id)
+            const res = await update(modelName, payload, _id)
             console.log(res)
             setFormData(initialFormState)
         }
         else {
-            const res = await add(modelName, formData)
+            const res = await add(modelName, payload)
             console.log(res)
         }
         setFormOpen(false)
