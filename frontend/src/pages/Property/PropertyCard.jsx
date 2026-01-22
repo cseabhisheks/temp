@@ -1,7 +1,7 @@
 import { LuBuilding } from "react-icons/lu"
 import { FaDotCircle } from "react-icons/fa"
 import { FaHouse } from "react-icons/fa6";
-import { RiSubtractLine } from "react-icons/ri";
+
 import Button from "../../component/Button/Button";
 import DynamicForm from "../../component/Form/DynamicForm";
 import { useState } from "react";
@@ -11,7 +11,6 @@ import { MdElectricBolt } from "react-icons/md";
 import { IoIosPricetags } from "react-icons/io";
 export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
     const { name, address, totalUnits, occupiedUnits, monthlyRevenue, tenants, _id, HPrice, EBRate } = PropertyConfig
-
 
     const handleRemove = async (_id) => {
         console.log('deleting....')
@@ -46,8 +45,8 @@ export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
         <div className="text-xs md:text-base relative border-primary capitalize  bg-white rounded-xl m-4 md:m-8 p-4 md:p-8 border-2 h-fit flex flex-col gap-2 ">
             {/* property Detail */}
             <span className="absolute right-4 flex gap-4">
-                <Button onClick={() => setFormOpen(true)} btn_text={'update'} btn_color={'bg-red-300'} />
-                <Button onClick={() => handleRemove(_id)} btn_text={'delete'} btn_color={'bg-green-200'} />
+                <Button onClick={() => setFormOpen(true)} btn_text={'update'} btn_color={'bg-green-300'} />
+                <Button onClick={() => handleRemove(_id)} btn_text={'delete'} btn_color={'bg-red-200'} />
             </span>
 
 
