@@ -5,7 +5,7 @@ const Property = createModel('property', {
     HName: String,
     HAddress: String,
     HPrice: Number,
-    EBRate:Number,
+    EBRate: Number,
 })
 
 // Room model
@@ -13,7 +13,7 @@ const room = createModel('room', {
     Property: { type: 'ObjectId', ref: 'property', required: true }, // Which property this room belongs to
     Status: { type: String, enum: ['vacant', 'occupied'], default: 'vacant' },
     RentAmount: Number,
-    RoomNo:String,
+    RoomNo: String,
     Tenant: { type: 'ObjectId', ref: 'tenant', default: null } // Who is currently renting
 })
 
@@ -21,13 +21,14 @@ const room = createModel('room', {
 const tenant = createModel('tenant', {
     TName: String,
     TPhone: { type: Number, maxLength: 12 },
-    Room: { type: 'ObjectId', ref: 'room' } 
+    Room: { type: 'ObjectId', ref: 'room' },
+    effectiveDate: { type: Date, required: true, default: Date.now },
 })
 
 // Rent bill model
 const rentBill = createModel('rentBill', {
     Tenant: { type: 'ObjectId', ref: 'tenant', required: true },
-    Month: { type: String, enum: ['january','february','march','april','may','june','july','august','september','october','november','december'], required: true },
+    Month: { type: String, enum: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'], required: true },
     RentAmount: Number,
     Paid: { type: Boolean, default: false }
 })
@@ -35,10 +36,10 @@ const rentBill = createModel('rentBill', {
 // Electricity bill model
 const electricityBill = createModel('electricityBill', {
     Tenant: { type: 'ObjectId', ref: 'tenant', required: true },
-    Month: { type: String, enum: ['january','february','march','april','may','june','july','august','september','october','november','december'], required: true },
-    previousReading:Number,
+    Month: { type: String, enum: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'], required: true },
+    previousReading: Number,
     currentReading: Number,
-    EBAmount:Number,
+    EBAmount: Number,
     Paid: { type: Boolean, default: false }
 })
 
