@@ -1,20 +1,25 @@
-import { useState, useEffect } from "react"
-import { aggregate } from "../../api/api"
-import tenantsPipeline from "./tenantPipeline"
+// tenantsData.js
+import { aggregate } from "../../api/api";
+import tenantPipeline from "./tenantPipeline";
+import { useState, useEffect } from "react";
 
 export default function tenantsData() {
-    const [tenants, setTenantsData] = useState([])
+  const [tenants, setTenants] = useState([]);
 
-    const fetchTenantsData = async () => {
-        const fetch = await aggregate('tenant',tenantsPipeline)
-        setTenantsData(fetch.data || [])
-        console.log(fetch.data)
+  const fetchTenantsData = async () => {
+    try {
+      const res = await aggregate("property", tenantPipeline);
+      setTenants(res.data || []);
+    } catch (err) {
+      console.error("Error fetching tenants:", err);
     }
-    useEffect(() => {
-        fetchTenantsData()
-    }, [])
-
-    return { tenants, setTenantsData}
+  };
 
 
+  // Fetch on mount
+  useEffect(() => {
+    fetchTenantsData();
+  }, []);
+
+  return { tenants, fetchTenantsData };
 }

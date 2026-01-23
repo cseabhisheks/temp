@@ -1,37 +1,58 @@
-const tenantsPipeline =[
-  // Join Room
-  {
-    $lookup: {
-      from: "rooms",
-      localField: "Room",
-      foreignField: "_id",
-      as: "room"
-    }
-  },
-  { $unwind: { path: "$room", preserveNullAndEmptyArrays: true } },
+// tenantsPipeline.js
+const tenantsPipeline = [
 
-  // Join Property
-  {
-    $lookup: {
-      from: "properties",
-      localField: "room.Property",
-      foreignField: "_id",
-      as: "property"
-    }
-  },
-  { $unwind: { path: "$property", preserveNullAndEmptyArrays: true } },
+    {
+        $lookup: {
+            from: 'rooms',
+            localField: '_id',
+            foreignField: 'Property',
+            as: 'room'
+        }
+    },
+    {
+        $lookup: {
+            from: 'tenants',
+            localField: 'room._id',
+            foreignField: 'Room',
+            as: 'tenant'
+        }
+    },
+   {
+  $project: {
+    _id: 0,
+    PropertyId: "$_id",
+    PropertyName: "$HName",
+    HAddress: 1,
+    EBRate: 1,
 
-  // Final projection
-  {
-    $project: {
-      _id: 0,
-      TName: 1,
-      TPhone: 1,
-      RoomNo: { $ifNull: ["$room.RoomNo", "NOT_ASSIGNED"] },
-      RoomRent: { $ifNull: ["$room.RentAmount", 0] },
-      effectiveDate: 1,
-      PropertyName: { $ifNull: ["$property.HName", "UNKNOWN_PROPERTY"] }
+    rooms: {
+      $map: {
+        input: "$room",
+        as: "r",
+        in: {
+          RoomId: "$$r._id",
+          RoomNo: "$$r.RoomNo",
+          RentAmount: "$$r.RentAmount"
+        }
+      }
+    },
+
+    tenants: {
+      $map: {
+        input: "$tenant",
+        as: "t",
+        in: {
+          tenantId: "$$t._id",
+          TName: "$$t.TName",
+          TPhone: "$$t.TPhone",
+          RoomNo: "$$t.RoomNo",
+          RoomRent: "$$t.RoomRent",
+          effectiveDate: "$$t.effectiveDate"
+        }
+      }
     }
   }
+}
+
 ]
-export default tenantsPipeline
+export default tenantsPipeline;

@@ -1,21 +1,29 @@
-export default function tenantForm(formOpen, setFormOpen, fetchTenantData) {
-    const formFields = [
-        { name: "TName", type: "text" },       // Tenant Name
-        { name: "TAge", type: "number" },      // Tenant Age (optional)
-        { name: "TPhone", type: "text" },      // Tenant Phone
-        { name: "TRent", type: "number" },     // Rent Amount
-        { name: "RoomNo", type: "text" },      // Room Number
-    ];
+export default function tenantForm(
+  formOpen,
+  setFormOpen,
+  fetchTenantData,
+  selectedTenant,
+  vacantRooms = []
+) {
+  const formFields = [
+    { name: "TName", type: "text" },
+    { name: "TPhone", type: "text" },
+    { name: "Room", type: "select" },
+    { name: "effectiveDate", type: "date" },
+  ];
 
-    const formConfig = {
-        title: 'Add Tenant',
-        formFields: formFields,
-        formOpen: formOpen,
-        setFormOpen: setFormOpen,
-        submitText: 'Add',
-        modelName: 'tenant',
-        refreshData: fetchTenantData
-    };
-
-    return formConfig;
+  return {
+    title: selectedTenant ? "Update Tenant" : "Add Tenant",
+    formFields,
+    formOpen,
+    setFormOpen,
+    submitText: selectedTenant ? "Update" : "Add",
+    modelName: "tenant",
+    _id: selectedTenant?.tenantId,       // use tenantId here
+    isUpdate: !!selectedTenant?.tenantId, // check tenantId
+    refreshData: fetchTenantData,
+    refData: {
+      Room: vacantRooms,
+    },
+  };
 }

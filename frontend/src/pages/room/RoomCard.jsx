@@ -37,9 +37,7 @@ export default function RoomCard({ property, fetchRoomData }) {
     modelName: 'room',
     _id: selectedRoom?.RoomId,
     isUpdate: !!selectedRoom?.RoomId,
-
     refreshData: fetchRoomData,
-
     hiddenData: {
       Property: property._id,
     }
