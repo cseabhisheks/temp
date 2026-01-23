@@ -1,3 +1,4 @@
+import { update } from "../../api/api";
 export default function tenantForm(
   formOpen,
   setFormOpen,
@@ -22,6 +23,11 @@ export default function tenantForm(
     _id: selectedTenant?.tenantId,       // use tenantId here
     isUpdate: !!selectedTenant?.tenantId, // check tenantId
     refreshData: fetchTenantData,
+     onAfterAdd: async (formData) => {
+      if (formData.Room) {
+        await update("room", { Status: "Occupied" }, formData.Room);
+      }
+    },
     refData: {
       Room: vacantRooms,
     },

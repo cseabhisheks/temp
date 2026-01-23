@@ -32,6 +32,11 @@ export default function DynamicForm({ formConfig, refData }) {
             await update(modelName, payload, _id);
         } else {
             await add(modelName, payload);
+
+            // ✅ Run only if provided
+            if (typeof formConfig.onAfterAdd === "function") {
+                await formConfig.onAfterAdd(formData);
+            }
         }
 
         setFormData(initialFormState);
@@ -73,12 +78,12 @@ export default function DynamicForm({ formConfig, refData }) {
                         className="rounded-xl w-[90vw] md:w-[40vw] p-4 bg-primary text-accent"
                     >
                         <div className="flex items-center justify-between">
-                            <h1 className="text-2xl capitalize mb-4 font-bold text-gray-200">{title}</h1>
+                            <h1 className="md:text-2xl capitalize mb-4 font-bold text-gray-200">{title}</h1>
                             <IoClose onClick={() => setFormOpen(false)} className="text-xl" />
                         </div>
 
                         {formFields.map((elem, idx) => (
-                            <label key={idx} htmlFor={elem.name}>
+                            <label key={idx} htmlFor={elem.name} className="text-xs md:text-base">
                                 <span className="capitalize">{elem.name}</span>
                                 <br />
                                 {elem.type === "select" ? (
@@ -86,7 +91,7 @@ export default function DynamicForm({ formConfig, refData }) {
                                         name={elem.name}
                                         value={formData[elem.name] || ""}
                                         onChange={handleChange}
-                                        className="rounded-xl px-2 py-1 mb-4 w-full"
+                                        className="rounded-xl px-2 py-1 mb-4 w-full h-8 text-black/50"
                                     >
                                         <option value="">Select Room</option>
                                         {refData?.[elem.name]?.length > 0 ? (
@@ -108,7 +113,7 @@ export default function DynamicForm({ formConfig, refData }) {
                                         name={elem.name}
                                         value={formData[elem.name] || ""}
                                         onChange={handleChange}
-                                        className="rounded-xl px-2 py-1 mb-4 w-full"
+                                        className="rounded-xl px-2 py-1 mb-4 w-full h-8 text-black/50"
                                     />
                                 )}
                             </label>

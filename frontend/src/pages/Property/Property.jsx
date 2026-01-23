@@ -19,7 +19,7 @@ export default function Property() {
       <ButtonHeader content={propertyHeader(setFormOpen)} />
 
       {propertyData.length === 0 ? (
-        <div className="text-center capitalize bg-white rounded-xl h-[50vh] flex items-center justify-center">no properties please add</div>
+        <div className="text-center capitalize bg-white rounded-xl p-4 flex items-center justify-center">no properties please add</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {propertyData.map((element, idx) => (
