@@ -2,7 +2,7 @@ import PropertyCard from "./PropertyCard"
 import { useState } from "react"
 import ButtonHeader from "../../layout/ButtonHeader";
 import DynamicForm from '../../component/Form/DynamicForm'
-import propertyForm from "./PropertyForm";
+import propertyForm from "./propertyForm";
 import propertiesData from "./propertiesData";
 import propertyHeader from './propertyHeader'
 export default function Property() {
