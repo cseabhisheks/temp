@@ -5,17 +5,22 @@ import { FaHouse } from "react-icons/fa6";
 import Button from "../../component/Button/Button";
 import DynamicForm from "../../component/Form/DynamicForm";
 import { useState } from "react";
-import { remove } from "../../api/api";
+import { remove, removeAll } from "../../api/api";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLock } from "react-icons/fa";
 import { MdElectricBolt } from "react-icons/md";
 import { IoIosPricetags } from "react-icons/io";
-export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
+export default function PropertyCard({ PropertyConfig, fetchPropertyData }) {
     const { name, address, totalUnits, occupiedUnits, monthlyRevenue, tenants, _id, HPrice, EBRate } = PropertyConfig
+
+    const roomIds = PropertyConfig.rooms.map(r => r.roomId)
+    console.log(roomIds)
 
     const handleRemove = async (_id) => {
         console.log('deleting....')
         const res = await remove('property', _id)
-        console.log(res)
+        const del = await removeAll('room', { Property: _id })
+        const de = await removeAll('tenant', { Room: { $in: roomIds } })
+
         fetchPropertyData()
     }
     const [formOpen, setFormOpen] = useState(false)
@@ -91,14 +96,14 @@ export default function PropertyCard({ PropertyConfig,fetchPropertyData }) {
                         tenants.map((element, idx) => (
                             <li key={idx} className=" border-2  mt-4 bg-primary/20 rounded-xl  px-2 py-1 flex flex-col md:flex-row gap-1 md:items-center">
                                 <div>{element.name}</div>
-                              
+
                                 <div>Room No. {element.roomNo}</div>
-                           
+
                                 <div>Rent. ₹{(element.rent).toLocaleString('en-IN')}</div>
                             </li>
                         ))
                         :
-                        <div>no tenants</div>
+                        <div>no tenants: need to change pipeline for tenants also caluclate total rent amount </div>
                     }
                 </ul>
             </div>

@@ -27,7 +27,7 @@ export default function TenantCard({
   const handleRemove = async () => {
     try {
       await remove("tenant", tenantId);
-      await update("room", { Status: "vacant" }, room.RoomId);
+      await update("room", { Status: "vacant",Tenant:tenantId }, room.RoomId);
       refresh();
     } catch (err) {
       console.error("Error deleting tenant:", err);

@@ -26,7 +26,7 @@ export default function Tenant() {
   console.log(properties)
   return (
     <>
-      <div className="bg-primary/20 capitalize h-full">
+      <div className="bg-primary/20 capitalize min-h-full">
         <ButtonHeader content={tenantHeader()} />
 
         <DynamicForm

@@ -43,6 +43,14 @@ const remove = async (modelName,  id) => {
   }
 }
 
+const removeAll = async (modelName, formData) => {
+  try {
+    const res = await axios.post(`${BACKEND}/${modelName}/all-delete`, formData)
+    return res.data
+  } catch (err) {
+    return err
+  }
+}
 
 const aggregate = async (modelName, pipeline) => {
   try {
@@ -52,11 +60,4 @@ const aggregate = async (modelName, pipeline) => {
     return err
   }
 }
-export { fetchAll, find, aggregate, add, update,remove }
-
-
-
-// router.get(`/:_id/${name}/one`, crud.fetchOne)
-// router.post('/add', crud.add)
-// router.patch('/:_id/update', crud.update)
-// router.delete('/:_id/delete', crud.remove)
+export { fetchAll, find, aggregate, add, update,remove,removeAll }

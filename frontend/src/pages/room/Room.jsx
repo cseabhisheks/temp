@@ -25,7 +25,7 @@ export default function Room() {
 
     return (<>
         {/* header */}
-        <div className='bg-primary/20 h-full'>
+        <div className='bg-primary/20 min-h-full'>
             <div className="capitalize p-8 ">
                 <div className="flex justify-between mb-4 ">
                     <h1 className="text-lg md:text-xl text-secondary  font-bold tracking-wider ">rooms</h1>

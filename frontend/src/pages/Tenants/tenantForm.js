@@ -25,7 +25,7 @@ export default function tenantForm(
     refreshData: fetchTenantData,
      onAfterAdd: async (formData) => {
       if (formData.Room) {
-        await update("room", { Status: "Occupied" }, formData.Room);
+        await update("room", { Status: "occupied" }, formData.Room);
       }
     },
     refData: {

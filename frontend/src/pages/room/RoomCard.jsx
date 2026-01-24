@@ -4,7 +4,7 @@ import DynamicForm from "../../component/Form/DynamicForm";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import Button from "../../component/Button/Button";
-import { remove } from "../../api/api";
+import { remove, removeAll } from "../../api/api";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function RoomCard({ property, fetchRoomData }) {
@@ -13,6 +13,7 @@ export default function RoomCard({ property, fetchRoomData }) {
 
     console.log('deleting....', _id)
     const res = await remove('room', _id)
+    await removeAll('tenant', { Room: _id })
     console.log(res)
     fetchRoomData()
   }
@@ -72,7 +73,7 @@ export default function RoomCard({ property, fetchRoomData }) {
             return (
               <div
                 key={idx}
-                className={`text-xs md:text-base bg-white ${!tenant ? "border-warning text-warning" : "border-success text-success"
+                className={`text-xs md:text-base bg-white ${element.Status=='vacant' ? "border-warning text-warning bg-warning/10" : "border-success text-success bg-success/10"
                   } border-2 flex flex-wrap gap-4 justify-between p-2 md:p-4 rounded-xl mb-3`}
               >
                 <span className="flex items-center gap-4">
@@ -80,7 +81,7 @@ export default function RoomCard({ property, fetchRoomData }) {
                 </span>
 
                 <div className="flex gap-4">
-                  <span>{tenant ?? "vacant"}</span>
+                  <span>{element.Status}</span>
                   <span>{element.RentAmount ? `₹ ${element.RentAmount}` : ""}</span>
                 </div>
 
@@ -91,12 +92,12 @@ export default function RoomCard({ property, fetchRoomData }) {
                       setFormOpen(true);
                     }}
                     btn_text="update"
-                    btn_color="bg-red-300"
+                    btn_color="bg-green-300"
                   />
                   <Button
                     onClick={() => handleRemove(element.RoomId)}
                     btn_text="delete"
-                    btn_color="bg-green-200"
+                    btn_color="bg-red-200"
                   />
                 </span>
               </div>

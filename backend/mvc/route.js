@@ -11,6 +11,7 @@ const routerLayout = (name, model) => {
     router.post('/add', crud.add)
     router.patch('/:_id/update', crud.update)
     router.delete('/:_id/delete', crud.remove)
+    router.post('/all-delete', crud.removeAll)
     return router
 }
 module.exports = routerLayout
