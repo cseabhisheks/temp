@@ -49,7 +49,8 @@ const payment = createModel('payment', {
     amount: Number,
     paymentMethod: { type: String, enum: ['cash', 'upi', 'banktransfer', 'cheque'] },
     type: { type: String, enum: ['rentBill', 'electricityBill'] },
-    Bill: { type: 'ObjectId', refPath: 'type' } // Dynamic ref to either rentBill or electricityBill
+    Bill: { type: 'ObjectId', refPath: 'type' },
+    note: { type: String }
 })
 
 module.exports = { Property, room, tenant, rentBill, electricityBill, payment }

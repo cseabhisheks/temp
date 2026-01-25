@@ -19,11 +19,9 @@ export default function Tenant() {
   const fetchVacantRoom = async (id) => {
     const res = await find('room', { Status: 'vacant', Property: id })
     setVacantRoom(res.data)
-    console.log(res)
 
   }
 
-  console.log(properties)
   return (
     <>
       <div className="bg-primary/20 capitalize min-h-full">

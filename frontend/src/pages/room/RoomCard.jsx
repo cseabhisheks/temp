@@ -82,7 +82,7 @@ export default function RoomCard({ property, fetchRoomData }) {
 
                 <div className="flex gap-4">
                   <span>{element.Status}</span>
-                  <span>{element.RentAmount ? `₹ ${element.RentAmount}` : ""}</span>
+                  <span>{element.RentAmount ? `₹ ${(element.RentAmount).toLocaleString('en-IN')}` : ""}</span>
                 </div>
 
                 <span className="flex gap-4">
